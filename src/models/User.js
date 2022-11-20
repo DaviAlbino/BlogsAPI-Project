@@ -5,13 +5,13 @@ const User = (sequelize, DataTypes) => {
             primaryKey: true,
             autoIncrement: true
         },
-        display_name: DataTypes.STRING,
+        displayName: DataTypes.STRING,
         email: DataTypes.STRING,
         password: DataTypes.STRING,
         image: DataTypes.STRING,
     },
     {
-        // underscored: true,
+        underscored: true,
         timestamps: false,
         tableName: 'users',
     });
