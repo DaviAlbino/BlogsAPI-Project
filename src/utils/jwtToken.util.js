@@ -9,4 +9,19 @@ const getToken = (data) => {
     return token;
 };
 
-module.exports = getToken;
+const tokenValidation = (token) => {
+    if (!token) {
+        return { type: 401, message: 'No authorization' };
+    }
+    try {
+        const userToken = jwt.verify(token, process.env.JWT_SECRET);
+        return { type: null, message: userToken };
+    } catch (error) {
+        return { type: 401, message: 'No authorization' };
+    }
+};
+
+module.exports = { 
+    getToken,
+    tokenValidation,
+};
