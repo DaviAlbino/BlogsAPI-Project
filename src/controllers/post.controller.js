@@ -19,9 +19,10 @@ const findPostById = async (req, res) => {
 
 const updatePost = async (req, res) => {
     const { id } = req.params;
-    const userId = req.user;
+    const userId = req.user.id;
+
     // const checkUserId = await postService.findPostById(userId);
-    // console.log('user: ', authorization);
+    console.log('user: ', userId);
     const checkPost = postValidation(req.body);
 
     if (checkPost.status) {
@@ -38,7 +39,6 @@ const updatePost = async (req, res) => {
 
 const search = async (req, res) => {
     const { q } = req.query;
-    console.log('query: ', q);
     const result = await postService.search(q);
     return res.status(200).json(result);
 };

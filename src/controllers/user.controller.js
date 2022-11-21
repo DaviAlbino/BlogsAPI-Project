@@ -8,7 +8,7 @@ const insertUser = async (req, res) => {
    }
    const token = await userService.insertUser(checkUser);
 
-   req.user = token;
+//    req.user = token;
    
    if (token.type) {
     return res.status(token.type).json({ message: token.message });

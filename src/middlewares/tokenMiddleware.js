@@ -8,7 +8,8 @@ const tokenMiddleware = async (req, res, next) => {
     }
 
     try {
-       jwt.verify(authorization, process.env.JWT_SECRET);   
+       const { data } = jwt.verify(authorization, process.env.JWT_SECRET);  
+       req.user = data; 
     } catch (error) {
         return res.status(401).json({ message: 'Expired or invalid token' });
     }

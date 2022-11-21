@@ -53,15 +53,15 @@ const updatePost = async (body, id, user) => {
     const { dataValues } = await BlogPost.findOne({
         where: { id }, attributes: ['userId'],
     });
-    console.log('user: ', user);
     if (user !== dataValues.userId) {
         return { type: 401, message: 'Unauthorized user' };
     } 
-
+    
     await BlogPost.update({ title, content, updated: new Date() }, { where: { id } });
+    console.log('ID: ', id);
 
     const post = await BlogPost.findByPk(id, { include: [
-        { model: User, as: 'user', where: { id: user.id }, attributes: { exclude: ['password'] } }, 
+        { model: User, as: 'user', where: { id: user }, attributes: { exclude: ['password'] } }, 
         { model: Category, as: 'categories' }],
     });
     return { type: null, message: post };
