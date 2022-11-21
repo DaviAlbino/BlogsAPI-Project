@@ -21,8 +21,6 @@ const updatePost = async (req, res) => {
     const { id } = req.params;
     const userId = req.user.id;
 
-    // const checkUserId = await postService.findPostById(userId);
-    console.log('user: ', userId);
     const checkPost = postValidation(req.body);
 
     if (checkPost.status) {

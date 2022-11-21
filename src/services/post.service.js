@@ -41,15 +41,23 @@ const findPostById = async (id) => {
     return { type: null, message: post };
 };
 
-// const userByToken = (tokenAuth) => {
-//     const user = tokenValidation(tokenAuth);
-//     return user.userWithoutPassword;
-// };
+const deletePost = async (id, user) => {
+    const userById = await BlogPost.findByPk(id, { where: { user } });
+
+    if (!userById) {
+        return { type: 404, message: 'Post does not exist' };
+    }
+    if (userById.dataValues.userId !== user) {
+        return { type: 401, message: 'Unauthorized user' };
+    }
+    await BlogPost.destroy({ where: { id } });
+
+    return { type: null, message: '' };
+};
 
 const updatePost = async (body, id, user) => {
     const { title, content } = body;
 
-    // const user = await userByToken(token);
     const { dataValues } = await BlogPost.findOne({
         where: { id }, attributes: ['userId'],
     });
@@ -58,7 +66,6 @@ const updatePost = async (body, id, user) => {
     } 
     
     await BlogPost.update({ title, content, updated: new Date() }, { where: { id } });
-    console.log('ID: ', id);
 
     const post = await BlogPost.findByPk(id, { include: [
         { model: User, as: 'user', where: { id: user }, attributes: { exclude: ['password'] } }, 
@@ -88,4 +95,5 @@ module.exports = {
     findPostById,
     updatePost,
     search,
+    deletePost,
 };
