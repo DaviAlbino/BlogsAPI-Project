@@ -12,6 +12,7 @@ const insertLogin = async (email, password) => {
     if (!user || user.password !== password) {
         return { status: 400, message: 'Invalid fields' };
     }
+
     const token = jwtToken.getToken(user);
     return token;
 };

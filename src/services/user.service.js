@@ -10,7 +10,7 @@ const insertUser = async ({ displayName, email, password, image }) => {
     }
 
     const newUser = await User.create({ displayName, email, password, image });
-
+    
     const token = getToken(newUser);
     return token;
 };

@@ -10,14 +10,11 @@ const getToken = (data) => {
 };
 
 const tokenValidation = (token) => {
-    if (!token) {
-        return { type: 401, message: 'No authorization' };
-    }
     try {
-        const userToken = jwt.verify(token, process.env.JWT_SECRET);
-        return { type: null, message: userToken };
+        const data = jwt.verify(token, process.env.JWT_SECRET);
+        return data;
     } catch (error) {
-        return { type: 401, message: 'No authorization' };
+        return { type: 401, message: 'Expired or invalid token' };
     }
 };
 
