@@ -5,6 +5,7 @@ const tokenMiddleware = require('../middlewares/tokenMiddleware');
 
 const postRouter = express.Router();
 
+postRouter.post('/', tokenMiddleware, postController.createPost);
 postRouter.get('/', tokenMiddleware, postController.findAllPosts);
 postRouter.get('/search', tokenMiddleware, postController.search);
 postRouter.get('/:id', tokenMiddleware, postController.findPostById);

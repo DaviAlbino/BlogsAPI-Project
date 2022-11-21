@@ -1,5 +1,5 @@
 const { Op } = require('sequelize');
-const { BlogPost, User, Category } = require('../models');
+const { BlogPost, User, Category, PostCategory } = require('../models');
 
 const findAllPosts = async () => {
     const postList = BlogPost.findAll({
@@ -90,10 +90,33 @@ const search = async (query) => {
       return blogPosts;
 };
 
+const createPost = async (id, title, content, categoryIds) => {
+    const { count } = await Category.findAndCountAll({ where: { id: categoryIds } });
+  if (categoryIds.length !== count) {
+      return { type: 400, message: 'one or more "categoryIds" not found' };
+    }  
+    const { dataValues } = await BlogPost.create({
+        userId: id,
+        title, 
+        content,
+        published: new Date(),
+        updated: new Date(),
+    });
+
+    console.log('dataValues: ', dataValues);
+ 
+    await categoryIds.map(async (categoryId) => {
+        await PostCategory.create({ postId: dataValues.id, categoryId });
+    }); 
+    // await PostCategory.bulkCreate(categoryList, { fields: ['postId', 'categoryId'] });
+    return { type: null, message: dataValues };
+};
+
 module.exports = {
     findAllPosts,
     findPostById,
     updatePost,
     search,
     deletePost,
+    createPost,
 };
