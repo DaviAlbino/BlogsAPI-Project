@@ -36,8 +36,16 @@ const updatePost = async (req, res) => {
     return res.status(200).json(message);
 };
 
+const search = async (req, res) => {
+    const { q } = req.query;
+    console.log('query: ', q);
+    const result = await postService.search(q);
+    return res.status(200).json(result);
+};
+
 module.exports = {
     findAllPosts,
     findPostById,
     updatePost,
+    search,
 };
